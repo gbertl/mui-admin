@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { ColorModeContext } from './context/ColorModeContext';
+import Sidebar from './layouts/Sidebar';
+import Topbar from './layouts/Topbar';
+import Dashboard from './pages/dashboard';
+import Contacts from './pages/Contacts';
+import Team from './pages/Team';
+import { useGetTheme } from './theme';
+import Invoices from './pages/Invoices';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const { mode } = useContext(ColorModeContext);
+  const theme = useGetTheme(mode);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="app">
+        <Sidebar />
+        <main className="content">
+          <Topbar />
 
-export default App
+          <Routes>
+            <Route path="/" element={<Dashboard />}></Route>
+            <Route path="/team" element={<Team />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/invoices" element={<Invoices />} />
+            {/* <Route path="/form" element={<Form />} /> */}
+            {/* <Route path="/bar" element={<Bar />} /> */}
+            {/* <Route path="/pie" element={<Pie />} /> */}
+            {/* <Route path="/line" element={<Line />} /> */}
+            {/* <Route path="/faq" element={<FAQ />} /> */}
+            {/* <Route path="/calendar" element={<Calendar />} /> */}
+            {/* <Route path="/geography" element={<Geography />} /> */}
+          </Routes>
+        </main>
+      </div>
+    </ThemeProvider>
+  );
+};
+
+export default App;
